@@ -126,7 +126,7 @@ session_start();
             </div>
         </div>
     </div>
-
-    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/dashboard.js">
+    </script>
 </body>
 </html>

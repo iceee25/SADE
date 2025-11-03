@@ -8,6 +8,8 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SADE - Schedule Management</title>
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/schedule-modal.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="main-container">
@@ -22,18 +24,17 @@ session_start();
             <div class="page-header">
                 <h1 class="page-title">Schedule Management</h1>
                 <div class="header">
-                <div class="user-profile">
-                    <select id="roomSelect" class="add-btn room-select" onchange="changeRoom()">
-                        <option value="1811">Lab 1811</option>
-                        <option value="1812">Lab 1812</option>
-                        <option value="1815">Lab 1815</option>
-                        <option value="1816">Lab 1816</option>
-                        <option value="1817">Lab 1817</option>
-                    </select>
-                <button class="add-btn" onclick="openAddScheduleModal()">+ Add Schedule</button>
-            </div>
-        </div>
-
+                    <div class="user-profile">
+                        <select id="roomSelect" class="add-btn room-select" onchange="changeRoom()">
+                            <option value="1811">Lab 1811</option>
+                            <option value="1812">Lab 1812</option>
+                            <option value="1815">Lab 1815</option>
+                            <option value="1816">Lab 1816</option>
+                            <option value="1817">Lab 1817</option>
+                        </select>
+                        <button class="add-btn" onclick="openAddScheduleModal()">+ Add Schedule</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Schedule Container -->
@@ -65,23 +66,6 @@ session_start();
                     <!-- Monday -->
                     <div class="day-column">
                         <div class="day-header">Monday</div>
-                        <div class="time-grid-lines">
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                        </div>
-                        <!-- ITCAPSTONE1 Block -->
                         <div class="schedule-block schedule-blue" style="top: 80px; height: 120px;" onclick="viewScheduleDetails('ITCAPSTONE1')">
                             <div class="course-code">ITCAPSTONE1</div>
                             <div class="instructor">Prof. Cruz</div>
@@ -92,23 +76,6 @@ session_start();
                     <!-- Tuesday -->
                     <div class="day-column">
                         <div class="day-header">Tuesday</div>
-                        <div class="time-grid-lines">
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                        </div>
-                        <!-- ICYBERSEC1 Block -->
                         <div class="schedule-block schedule-red" style="top: 80px; height: 160px;" onclick="viewScheduleDetails('ICYBERSEC1')">
                             <div class="course-code">ICYBERSEC1</div>
                             <div class="instructor">Prof. Green</div>
@@ -119,23 +86,6 @@ session_start();
                     <!-- Wednesday -->
                     <div class="day-column">
                         <div class="day-header">Wednesday</div>
-                        <div class="time-grid-lines">
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                        </div>
-                        <!-- ALGORITHMS1 Block -->
                         <div class="schedule-block schedule-orange" style="top: 280px; height: 120px;" onclick="viewScheduleDetails('ALGORITHMS1')">
                             <div class="course-code">ALGORITHMS1</div>
                             <div class="instructor">Prof. Lee</div>
@@ -146,23 +96,6 @@ session_start();
                     <!-- Thursday -->
                     <div class="day-column">
                         <div class="day-header">Thursday</div>
-                        <div class="time-grid-lines">
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                        </div>
-                        <!-- QUANTITATIVE MODELS1 Block -->
                         <div class="schedule-block schedule-pink" style="top: 200px; height: 120px;" onclick="viewScheduleDetails('QUANTITATIVE')">
                             <div class="course-code">QUANTITATIVE MODELS1</div>
                             <div class="instructor">Prof. Johnson</div>
@@ -173,23 +106,6 @@ session_start();
                     <!-- Friday -->
                     <div class="day-column">
                         <div class="day-header">Friday</div>
-                        <div class="time-grid-lines">
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                        </div>
-                        <!-- CS1 Block -->
                         <div class="schedule-block schedule-pink" style="top: 80px; height: 200px;" onclick="viewScheduleDetails('CS1')">
                             <div class="course-code">CS1</div>
                             <div class="instructor">Prof. White</div>
@@ -200,22 +116,6 @@ session_start();
                     <!-- Saturday -->
                     <div class="day-column">
                         <div class="day-header">Saturday</div>
-                        <div class="time-grid-lines">
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                            <div class="time-line"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -235,55 +135,44 @@ session_start();
                 <h3 class="modal-title">Add New Schedule</h3>
                 <p class="modal-subtitle">Create a new class schedule for the selected laboratory</p>
             </div>
-
             <form id="addScheduleForm">
                 <div class="form-group">
                     <label class="form-label">Course Code</label>
                     <input type="text" class="form-input" id="courseCode" placeholder="e.g., CS101" required>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Course Name</label>
                     <input type="text" class="form-input" id="courseName" placeholder="e.g., Data Structures" required>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Instructor</label>
                     <input type="text" class="form-input" id="instructor" placeholder="e.g., Prof. Smith" required>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Day</label>
                         <select class="form-input" id="dayOfWeek" required>
                             <option value="">Select Day</option>
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thursday">Thursday</option>
-                            <option value="Friday">Friday</option>
-                            <option value="Saturday">Saturday</option>
+                            <option>Monday</option><option>Tuesday</option>
+                            <option>Wednesday</option><option>Thursday</option>
+                            <option>Friday</option><option>Saturday</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">Max Capacity</label>
                         <input type="number" class="form-input" id="maxCapacity" placeholder="30" min="1" required>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Start Time</label>
                         <input type="time" class="form-input" id="startTime" required>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">End Time</label>
                         <input type="time" class="form-input" id="endTime" required>
                     </div>
                 </div>
-
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeAddScheduleModal()">Cancel</button>
                     <button type="submit" class="btn btn-primary">Add Schedule</button>
@@ -292,220 +181,219 @@ session_start();
         </div>
     </div>
 
-    <!-- Schedule Details Modal -->
+   <!-- 📘 Pretty Schedule Details Modal -->
     <div id="scheduleDetailsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="detailsTitle">Schedule Details</h3>
-                <p class="modal-subtitle" id="detailsSubtitle">View and manage schedule information</p>
-            </div>
-
-            <div id="scheduleDetailsContent">
-                <!-- Content will be populated by JavaScript -->
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeScheduleDetailsModal()">Close</button>
-                <button type="button" class="btn btn-primary" onclick="editSchedule()">Edit Schedule</button>
-            </div>
+      <div class="modal-content">
+        <div class="tab-bar">
+          <button id="detailsTab" class="tab-button active">Schedule Details</button>
+          <button id="notificationsTab" class="tab-button">Notifications</button>
         </div>
+
+        <div id="scheduleDetailsContent" class="details-body">
+          <div class="details-row"><strong>Lab:</strong> <span id="labDetails">Lab 1811</span></div>
+          <div class="details-row"><strong>Course:</strong> <span id="courseDetails">IT2628</span></div>
+          <div class="details-row"><strong>Course Instructor:</strong> <span id="instructorDetails">Arthur Ollanda</span></div>
+          <div class="details-row"><strong>Day:</strong> <span id="dayDetails">Tuesday</span></div>
+          <div class="details-row"><strong>Time:</strong> <span id="timeDetails">7:00 AM to 10:00 AM</span></div>
+          <div class="details-row"><strong>Duration:</strong> <span id="durationDetails">2 hours</span></div>
+          <div class="details-row"><strong>Grace Period:</strong> <span id="graceDetails">15 minutes</span></div>
+          <div class="details-row"><strong>Absences Allowed:</strong> <span id="absenceDetails">6 hours</span></div>
+        </div>
+
+        <div id="notificationsContent" style="display: none;">
+          <p style="text-align:center; color:#888;">No notifications available for this schedule.</p>
+        </div>
+
+        <div class="modal-footer">
+          <button onclick="closeScheduleDetailsModal()">Done</button>
+          <button onclick="openDeleteModal()"><i class="fas fa-trash"></i></button>
+          <button onclick="openEditScheduleModal()"><i class="fas fa-edit"></i></button>
+          <button><i class="fas fa-users"></i></button>
+        </div>
+      </div>
     </div>
 
+    <!-- 🗑️ Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal">
+      <div class="modal-content delete-modal">
+        <h3>Delete Schedule</h3>
+        <p>Are you sure you want to delete this schedule?</p>
+        <div class="delete-buttons">
+          <button class="btn-yes" onclick="confirmDelete()">Yes</button>
+          <button class="btn-no" onclick="closeDeleteModal()">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Schedule Modal -->
+<div id="editScheduleModal" class="modal">
+  <div class="modal-content">
+    <h2>Edit Schedule</h2>
+
+    <form id="editScheduleForm">
+      <div class="form-group">
+        <label for="editCourse">Course</label>
+        <input type="text" id="editCourse" name="course" required>
+      </div>
+
+      <div class="form-group">
+        <label for="editInstructor">Instructor</label>
+        <input type="text" id="editInstructor" name="instructor" required>
+      </div>
+
+      <div class="form-group">
+        <label>Laboratory Room</label>
+        <div class="radio-group">
+          <label><input type="radio" name="lab" value="Lab 1"> 1811</label>
+          <label><input type="radio" name="lab" value="Lab 2"> 1812</label>
+        </div>
+      </div>
+
+      <div class="form-group time-group">
+        <div>
+          <label for="editStartTime">Start Time</label>
+          <input type="time" id="editStartTime" name="start_time" required>
+        </div>
+        <div>
+          <label for="editEndTime">End Time</label>
+          <input type="time" id="editEndTime" name="end_time" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="editDay">Day</label>
+        <select id="editDay" name="day" required>
+          <option value="">Select Day</option>
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="editDuration">Duration (minutes)</label>
+        <input type="number" id="editDuration" name="duration" min="0" required>
+      </div>
+
+      <div class="form-group">
+        <label for="editAbsences">Allowed Absences</label>
+        <input type="number" id="editAbsences" name="absences" min="0" required>
+      </div>
+
+      <div class="form-group">
+        <label for="editGrace">Grace Period (minutes)</label>
+        <input type="number" id="editGrace" name="grace" min="0" required>
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" class="btn cancel" onclick="closeEditScheduleModal()">Cancel</button>
+        <button type="submit" class="btn save">Save Schedule</button>
+      </div>
+    </form>
+  </div>
+</div>
+
     <script>
-        // Sample schedule data
-        const scheduleData = {
-            '1811': {
-                'ITCAPSTONE1': {
-                    courseCode: 'ITCAPSTONE1',
-                    courseName: 'IT Capstone Project 1',
-                    instructor: 'Prof. Cruz',
-                    day: 'Monday',
-                    startTime: '08:00',
-                    endTime: '10:00',
-                    enrolled: 20,
-                    capacity: 30,
-                    color: 'blue'
-                },
-                'ICYBERSEC1': {
-                    courseCode: 'ICYBERSEC1',
-                    courseName: 'Introduction to Cybersecurity',
-                    instructor: 'Prof. Green',
-                    day: 'Tuesday',
-                    startTime: '08:00',
-                    endTime: '12:00',
-                    enrolled: 30,
-                    capacity: 32,
-                    color: 'red'
-                },
-                'ALGORITHMS1': {
-                    courseCode: 'ALGORITHMS1',
-                    courseName: 'Algorithm Analysis',
-                    instructor: 'Prof. Lee',
-                    day: 'Wednesday',
-                    startTime: '11:00',
-                    endTime: '01:00',
-                    enrolled: 38,
-                    capacity: 45,
-                    color: 'orange'
-                },
-                'QUANTITATIVE': {
-                    courseCode: 'QUANTITATIVE MODELS1',
-                    courseName: 'Quantitative Models',
-                    instructor: 'Prof. Johnson',
-                    day: 'Thursday',
-                    startTime: '10:00',
-                    endTime: '12:00',
-                    enrolled: 32,
-                    capacity: 32,
-                    color: 'pink'
-                },
-                'CS1': {
-                    courseCode: 'CS1',
-                    courseName: 'Computer Science 1',
-                    instructor: 'Prof. White',
-                    day: 'Friday',
-                    startTime: '08:00',
-                    endTime: '01:00',
-                    enrolled: 32,
-                    capacity: 32,
-                    color: 'pink'
-                }
-            },
-            '1812': {
-                // Add schedules for other labs
-            }
-        };
+      // Tab switching logic
+      const detailsTab = document.getElementById('detailsTab');
+      const notificationsTab = document.getElementById('notificationsTab');
+      const detailsContent = document.getElementById('scheduleDetailsContent');
+      const notificationsContent = document.getElementById('notificationsContent');
 
-        // Check if user is logged in (for demo purposes, we'll skip this check)
-        // const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        // if (!currentUser) {
-        //     window.location.href = 'index.html';
-        // }
+      detailsTab.addEventListener('click', () => {
+        detailsTab.classList.add('active');
+        notificationsTab.classList.remove('active');
+        detailsContent.style.display = 'block';
+        notificationsContent.style.display = 'none';
+      });
 
-        function changeRoom() {
-            const roomSelect = document.getElementById('roomSelect');
-            const selectedRoom = roomSelect.value;
-            const scheduleTitle = document.getElementById('scheduleTitle');
-            scheduleTitle.textContent = `Viewing: Lab ${selectedRoom} Schedule`;
-            
-            // Here you would typically reload the schedule data for the selected room
-            console.log('Changed to room:', selectedRoom);
+      notificationsTab.addEventListener('click', () => {
+        notificationsTab.classList.add('active');
+        detailsTab.classList.remove('active');
+        detailsContent.style.display = 'none';
+        notificationsContent.style.display = 'block';
+      });
+
+      // Schedule data
+      const scheduleData = {
+        '1811': {
+          'ITCAPSTONE1': { courseCode:'ITCAPSTONE1', instructor:'Prof. Cruz', startTime:'08:00', endTime:'10:00' },
+          'ICYBERSEC1': { courseCode:'ICYBERSEC1', instructor:'Prof. Green', startTime:'08:00', endTime:'12:00' },
         }
+      };
 
-        function openAddScheduleModal() {
-            const modal = document.getElementById('addScheduleModal');
-            modal.classList.add('active');
-        }
+      // Show schedule details modal
+      function viewScheduleDetails(courseCode) {
+        const currentRoom = document.getElementById('roomSelect').value;
+        const schedule = scheduleData[currentRoom]?.[courseCode];
+        if (!schedule) return;
 
-        function closeAddScheduleModal() {
-            const modal = document.getElementById('addScheduleModal');
-            modal.classList.remove('active');
-            document.getElementById('addScheduleForm').reset();
-        }
+        document.getElementById('labDetails').textContent = 'Lab ' + currentRoom;
+        document.getElementById('courseDetails').textContent = schedule.courseCode;
+        document.getElementById('instructorDetails').textContent = schedule.instructor;
+        document.getElementById('timeDetails').textContent = formatTime(schedule.startTime) + ' to ' + formatTime(schedule.endTime);
+        document.getElementById('durationDetails').textContent = calculateDuration(schedule.startTime, schedule.endTime);
 
-        function viewScheduleDetails(courseCode) {
-            const currentRoom = document.getElementById('roomSelect').value;
-            const schedule = scheduleData[currentRoom] && scheduleData[currentRoom][courseCode];
-            
-            if (!schedule) {
-                console.log('Schedule not found:', courseCode);
-                return;
-            }
+        document.getElementById('scheduleDetailsModal').classList.add('active');
+      }
 
-            const modal = document.getElementById('scheduleDetailsModal');
-            const title = document.getElementById('detailsTitle');
-            const subtitle = document.getElementById('detailsSubtitle');
-            const content = document.getElementById('scheduleDetailsContent');
+      function closeScheduleDetailsModal() {
+        document.getElementById('scheduleDetailsModal').classList.remove('active');
+      }
 
-            title.textContent = schedule.courseCode;
-            subtitle.textContent = schedule.courseName;
+      // Add Schedule Modal Control
+      function openAddScheduleModal() {
+        document.getElementById('addScheduleModal').classList.add('active');
+      }
 
-            content.innerHTML = `
-                <div style="display: grid; gap: 15px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <strong>Instructor:</strong><br>
-                            <span style="color: #666;">${schedule.instructor}</span>
-                        </div>
-                        <div>
-                            <strong>Laboratory:</strong><br>
-                            <span style="color: #666;">Lab ${currentRoom}</span>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <strong>Day & Time:</strong><br>
-                            <span style="color: #666;">${schedule.day}, ${schedule.startTime} - ${schedule.endTime}</span>
-                        </div>
-                        <div>
-                            <strong>Enrollment:</strong><br>
-                            <span style="color: #666;">${schedule.enrolled}/${schedule.capacity} students</span>
-                        </div>
-                    </div>
-                    <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <strong>Enrollment Status:</strong><br>
-                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
-                            <div style="flex: 1; background: #e5e7eb; border-radius: 10px; height: 8px;">
-                                <div style="width: ${(schedule.enrolled / schedule.capacity) * 100}%; background: ${schedule.enrolled >= schedule.capacity ? '#ef4444' : '#10b981'}; height: 100%; border-radius: 10px;"></div>
-                            </div>
-                            <span style="font-size: 12px; color: #666;">${Math.round((schedule.enrolled / schedule.capacity) * 100)}%</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+      function closeAddScheduleModal() {
+        document.getElementById('addScheduleModal').classList.remove('active');
+      }
 
-            modal.classList.add('active');
-        }
+      // Delete Confirmation Modal Control
+      function openDeleteModal() {
+        document.getElementById('deleteConfirmModal').classList.add('active');
+      }
 
-        function closeScheduleDetailsModal() {
-            const modal = document.getElementById('scheduleDetailsModal');
-            modal.classList.remove('active');
-        }
+      function closeDeleteModal() {
+        document.getElementById('deleteConfirmModal').classList.remove('active');
+      }
 
-        function editSchedule() {
-            alert('Edit schedule functionality would be implemented here');
-            closeScheduleDetailsModal();
-        }
+      function confirmDelete() {
+        alert("Schedule deleted successfully!");
+        closeDeleteModal();
+        closeScheduleDetailsModal();
+      }
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
-            }
-        }
+      // Edit Schedule Modal
+    function openEditScheduleModal() {
+    document.getElementById('editScheduleModal').classList.add('active');
+    document.getElementById('scheduleDetailsModal').classList.remove('active');
+    }
 
-        // Handle add schedule form submission
-        document.getElementById('addScheduleForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                courseCode: document.getElementById('courseCode').value,
-                courseName: document.getElementById('courseName').value,
-                instructor: document.getElementById('instructor').value,
-                dayOfWeek: document.getElementById('dayOfWeek').value,
-                startTime: document.getElementById('startTime').value,
-                endTime: document.getElementById('endTime').value,
-                maxCapacity: parseInt(document.getElementById('maxCapacity').value)
-            };
+    function closeEditScheduleModal() {
+    document.getElementById('editScheduleModal').classList.remove('active');
+    }
 
-            console.log('Adding new schedule:', formData);
-            
-            // Here you would typically send the data to your backend
-            alert('Schedule added successfully!');
-            closeAddScheduleModal();
-        });
 
-        // Close modals when clicking outside
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
-            }
-        });
+      // Helper functions
+      function formatTime(time) {
+        let [h, m] = time.split(':');
+        const suffix = h >= 12 ? 'PM' : 'AM';
+        h = (h % 12) || 12;
+        return `${h}:${m} ${suffix}`;
+      }
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Schedule Management page loaded');
-        });
+      function calculateDuration(start, end) {
+        const [sh, sm] = start.split(':').map(Number);
+        const [eh, em] = end.split(':').map(Number);
+        const total = (eh * 60 + em) - (sh * 60 + sm);
+        const hrs = Math.floor(total / 60);
+        const mins = total % 60;
+        return `${hrs} hour${hrs !== 1 ? 's' : ''}${mins ? ' ' + mins + ' minutes' : ''}`;
+      }
     </script>
 </body>
 </html>
