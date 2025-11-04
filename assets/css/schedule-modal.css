@@ -1,0 +1,274 @@
+/* ===========================
+   Schedule Details Modal Styles
+   =========================== */
+
+/* 🔹 Overlay */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal.active {
+  display: flex;
+}
+
+/* 🔹 Modal Card */
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  animation: popIn 0.25s ease;
+  overflow: hidden;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 🔹 Tabs */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: none;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  color: #777;
+  transition: all 0.2s ease;
+}
+
+.tab-button.active {
+  color: #c62828;
+  border-bottom: 3px solid #c62828;
+  background: #fff;
+}
+
+.tab-button:hover {
+  color: #b71c1c;
+}
+
+/* 🔹 Schedule Details Content */
+.details-body {
+  padding: 18px 22px;
+  display: grid;
+  gap: 10px;
+  font-size: 15px;
+  color: #333;
+}
+
+.details-body strong {
+  color: #111;
+  font-weight: 600;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+/* 🔹 Notifications */
+#notificationsContent {
+  padding: 18px 22px;
+  font-size: 15px;
+  color: #555;
+}
+
+/* 🔹 Footer Buttons */
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+}
+
+.modal-footer button {
+  border: none;
+  background: #c62828;
+  color: white;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-footer button:hover {
+  background: #b71c1c;
+  transform: translateY(-1px);
+}
+
+.modal-footer i {
+  font-size: 15px;
+}
+
+/* 🔹 Responsive Behavior */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+.modal.active {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Delete Confirmation Modal */
+.delete-modal {
+  text-align: center;
+  width: 360px;
+  padding: 25px 20px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.25s ease;
+}
+
+.delete-modal h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #222;
+}
+
+.delete-modal p {
+  margin-bottom: 20px;
+  color: #444;
+  font-size: 15px;
+}
+
+.delete-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.delete-buttons .btn-yes,
+.delete-buttons .btn-no {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 25px;
+  font-size: 15px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-yes {
+  background-color: #11c211;
+}
+.btn-yes:hover {
+  background-color: #0ea00e;
+}
+
+.btn-no {
+  background-color: #d32f2f;
+}
+.btn-no:hover {
+  background-color: #b71c1c;
+}
+
+/* Blur + Fade backdrop */
+.modal.active {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+/* Edit Schedule Modal Styling */
+#editScheduleModal .modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 420px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+#editScheduleModal h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  color: #333;
+  text-align: center;
+}
+
+#editScheduleModal .form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#editScheduleModal .radio-group {
+  display: flex;
+  gap: 1rem;
+}
+
+#editScheduleModal input, 
+#editScheduleModal select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+#editScheduleModal .time-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#editScheduleModal .modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+#editScheduleModal .btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#editScheduleModal .btn.cancel {
+  background: #f44336;
+  color: white;
+}
+
+#editScheduleModal .btn.save {
+  background: #4caf50;
+  color: white;
+}

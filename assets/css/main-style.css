@@ -1,0 +1,112 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Background */
+body {
+    background: #f3f4f6;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Login Box Container */
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Login Box */
+.login-box {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 40px 50px;
+    width: 360px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.login-box:hover {
+    transform: translateY(-3px);
+}
+
+/* Logo */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+/* Title and Subtitle */
+.system-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #b30000;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.system-subtitle {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+/* Input Label */
+label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* Input Field */
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #ddd;
+    font-size: 15px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+input[type="password"]:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Button */
+.btn-submit {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background: #2563eb;
+}
