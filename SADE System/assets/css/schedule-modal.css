@@ -1,8 +1,4 @@
-/* ===========================
-   Schedule Details Modal Styles
-   =========================== */
 
-/* 🔹 Overlay */
 .modal {
   display: none;
   position: fixed;
@@ -22,7 +18,7 @@
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  width: 400px;
+  width: 500px;
   animation: popIn 0.25s ease;
   overflow: hidden;
 }
@@ -93,6 +89,81 @@
   padding: 18px 22px;
   font-size: 15px;
   color: #555;
+}
+
+/* 🔹 Participants Table */
+.participants-body {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.participants-table thead {
+  background: #f5f5f5;
+}
+
+.participants-table th {
+  padding: 8px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+  color: #555;
+}
+
+.participants-table td {
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.participants-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-small {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-edit:hover {
+  background: #d0d0d0;
+}
+
+.btn-delete {
+  background: #d32f2f;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #b71c1c;
+}
+
+.no-participants {
+  text-align: center;
+  padding: 20px;
+  color: #999;
 }
 
 /* 🔹 Footer Buttons */
@@ -186,6 +257,7 @@
 .btn-yes {
   background-color: #11c211;
 }
+
 .btn-yes:hover {
   background-color: #0ea00e;
 }
@@ -193,6 +265,7 @@
 .btn-no {
   background-color: #d32f2f;
 }
+
 .btn-no:hover {
   background-color: #b71c1c;
 }
@@ -213,7 +286,7 @@
   border-radius: 16px;
   width: 420px;
   max-width: 90%;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 #editScheduleModal h2 {
@@ -234,7 +307,7 @@
   gap: 1rem;
 }
 
-#editScheduleModal input, 
+#editScheduleModal input,
 #editScheduleModal select {
   padding: 8px;
   border-radius: 8px;
@@ -271,4 +344,24 @@
 #editScheduleModal .btn.save {
   background: #4caf50;
   color: white;
+}
+
+/* Update schedule-block positioning to work with new wrapper structure */
+.schedule-block {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  border-radius: 8px;
+  padding: 8px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.schedule-block:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
