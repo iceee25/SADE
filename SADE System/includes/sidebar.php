@@ -1,5 +1,7 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
+$is_technician = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'technician';
+$is_faculty = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'faculty';
 ?>
 
 <head>
@@ -7,7 +9,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
 
 <div class="sidebar">
@@ -18,41 +19,48 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 
     <div class="sidebar-menu">
-        <a href="../public/dashboard.php" 
-           class="menu-item <?= ($current_page == 'dashboard.php') ? 'active' : '' ?>">
-            <i class="fas fa-columns"></i>
-            Dashboard
-        </a>
-
+        <!-- Schedule Management - accessible to both Faculty and Technician -->
         <a href="../public/schedule-management.php" 
            class="menu-item <?= ($current_page == 'schedule-management.php') ? 'active' : '' ?>">
             <i class="fas fa-clipboard-list"></i>
-            Schedule Management
+            Schedules
         </a>
 
-        <a href="../public/registered-face-ids.php" 
-           class="menu-item <?= ($current_page == 'registered-face-ids.php') ? 'active' : '' ?>">
-            <i class="fas fa-users"></i>
-            Registered Face IDs
-        </a>
+        <!-- Technician-only menu items -->
+        <?php if ($is_technician): ?>
+ 
 
-        <a href="../public/logs.php" 
-           class="menu-item <?= ($current_page == 'logs.php') ? 'active' : '' ?>">
-            <i class="far fa-clipboard"></i>
-            Logs
-        </a>
+            <!-- Alerts - Technician only -->
+            <a href="../public/alerts.php" 
+               class="menu-item <?= ($current_page == 'alerts.php') ? 'active' : '' ?>">
+                <i class="fas fa-bell"></i>
+                Alerts
+            </a>
 
-        <a href="../public/technician-panel.php" 
-           class="menu-item <?= ($current_page == 'technician-panel.php') ? 'active' : '' ?>">
-            <i class="fas fa-keyboard"></i>
-            Technician Panel
-        </a>
+            <!-- Registered Face IDs - Technician only -->
+            <a href="../public/registered-face-ids.php" 
+               class="menu-item <?= ($current_page == 'registered-face-ids.php') ? 'active' : '' ?>">
+                <i class="fas fa-users"></i>
+                Registered Face IDs
+            </a>
+
+            <!-- Removed Participant Registration - now accessed from schedule details modal -->
+
+            <!-- Logs - Technician only -->
+            <a href="../public/logs.php" 
+               class="menu-item <?= ($current_page == 'logs.php') ? 'active' : '' ?>">
+                <i class="far fa-clipboard"></i>
+                Logs
+            </a>
+
+            <!-- Technician Panel - Technician only -->
+            <a href="../public/technician-panel.php" 
+               class="menu-item <?= ($current_page == 'technician-panel.php') ? 'active' : '' ?>">
+                <i class="fas fa-keyboard"></i>
+                Technician Panel
+            </a>
+        <?php endif; ?>
     </div>
 
-    <div class="logout-section">
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-in-alt"></i>
-            Logout
-        </button>
-    </div>
+    <!-- Removed logout section - now using user dropdown in header -->
 </div>
