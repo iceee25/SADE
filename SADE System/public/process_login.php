@@ -1,5 +1,9 @@
 <?php
+// Make session expire when browser closes
+ini_set('session.cookie_lifetime', 0);
+
 session_start();
+
 require_once '../includes/db_connect.php';
 
 $pin = $_POST['pin'] ?? '';
@@ -20,6 +24,7 @@ if ($result->num_rows > 0) {
     $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
     $_SESSION['user_role'] = 'technician';
     $_SESSION['is_logged_in'] = true;
+    $_SESSION['initialized'] = true;
     
     header('Location: schedule-management.php');
     exit;

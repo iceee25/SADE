@@ -1,12 +1,25 @@
 <?php
+// Make session expire when browser closes
+ini_set('session.cookie_lifetime', 0);
+
 session_start();
-require_once '../includes/db_connect.php';
+
+// Check if this is a new session (browser was closed and reopened)
+if (!isset($_SESSION['initialized'])) {
+    // Clear all session data and start fresh
+    session_unset();
+    $_SESSION['initialized'] = true;
+    $_SESSION['user_role'] = 'faculty';
+    $_SESSION['user_name'] = 'Faculty User';
+}
 
 // Set default role to faculty if no session exists
 if (!isset($_SESSION['user_role'])) {
     $_SESSION['user_role'] = 'faculty';
     $_SESSION['user_name'] = 'Faculty User';
 }
+
+require_once '../includes/db_connect.php';
 
 $userRole = $_SESSION['user_role'] ?? 'faculty';
 
