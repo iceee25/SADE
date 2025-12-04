@@ -13,13 +13,28 @@ if (empty($pin)) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT id, user_id, first_name, last_name, user_type FROM users WHERE pin = ? AND user_type = 'TECHNICIAN' AND is_active = 1");
-$stmt->bind_param('s', $pin);
+// Get all active technicians from database
+$stmt = $conn->prepare("SELECT id, user_id, first_name, last_name, user_type, pin FROM users WHERE user_type = 'TECHNICIAN' AND is_active = 1");
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
+$authenticated = false;
+$user = null;
+
+// Check each technician's PIN using password_verify
+while ($row = $result->fetch_assoc()) {
+    // Verify the entered PIN against the hashed PIN in database
+    if (password_verify($pin, $row['pin'])) {
+        $authenticated = true;
+        $user = $row;
+        break;
+    }
+}
+
+$stmt->close();
+
+if ($authenticated && $user) {
+    // Set session variables
     $_SESSION['user_id'] = $user['user_id'];
     $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
     $_SESSION['user_role'] = 'technician';

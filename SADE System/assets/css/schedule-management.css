@@ -205,3 +205,46 @@
 .btn-delete:hover {
     background: #c0392b;
 }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-left h1 {
+    color: #333;
+    margin: 0;
+    font-size: 2em;
+}
+
+.header-left .role-indicator {
+    color: #c00;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.header-left .role-indicator .user-name {
+    color: #333;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.switch-role-btn {
+    background: #c00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.switch-role-btn:hover {
+    background: #a00;
+}

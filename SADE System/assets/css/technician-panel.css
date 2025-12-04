@@ -106,3 +106,52 @@ input {
     border-radius: 4px;
     box-sizing: border-box;
 }
+
+.pin-input-wrapper {
+    position: relative;
+    margin: 5px 0 10px;
+}
+
+.pin-input-wrapper input {
+    width: 100%;
+    padding: 8px 40px 8px 8px;
+    margin: 0;
+}
+
+/* Hide browser's default password reveal button */
+.pin-input-wrapper input::-ms-reveal,
+.pin-input-wrapper input::-ms-clear {
+    display: none;
+}
+
+.pin-input-wrapper input::-webkit-credentials-auto-fill-button,
+.pin-input-wrapper input::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+
+.eye-toggle {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.eye-toggle:hover {
+    color: #c00;
+}
+
+.eye-toggle i {
+    font-size: 16px;
+}

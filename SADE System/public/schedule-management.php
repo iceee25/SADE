@@ -22,6 +22,7 @@ if (!isset($_SESSION['user_role'])) {
 require_once '../includes/db_connect.php';
 
 $userRole = $_SESSION['user_role'] ?? 'faculty';
+$userName = $_SESSION['user_name'] ?? 'Faculty User';
 
 // Get selected room
 $selected_room = $_GET['room'] ?? '1811';
@@ -83,14 +84,21 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Added user dropdown to header -->
-            <div class="header-top">
-                <div class="page-header">
-                    <h1 class="page-title">Schedule Management<br><span style="font-size: 16px; font-weight: 500; color: #666;"><?= ucfirst($userRole) ?></span></h1>
+            <div class="header-container">
+                <div class="header-left">
+                    <h1>Schedule Management</h1>
+                    <div class="role-indicator">
+                        <?php echo ucfirst(htmlspecialchars($userRole)); ?>
+                        <?php if ($userRole === 'technician'): ?>
+                            <span class="user-name"> - <?php echo htmlspecialchars($userName); ?></span>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="header-right">
-                    <?php include '../includes/user-dropdown.php'; ?>
-                </div>
+                <?php if ($userRole === 'faculty'): ?>
+                    <a href="switch-role.php?role=technician" class="switch-role-btn">Switch to Technician</a>
+                <?php else: ?>
+                    <a href="switch-role.php?role=faculty" class="switch-role-btn">Switch to Faculty</a>
+                <?php endif; ?>
             </div>
 
             <div class="page-header">
