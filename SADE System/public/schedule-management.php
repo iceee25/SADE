@@ -86,7 +86,7 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
             <!-- Added user dropdown to header -->
             <div class="header-top">
                 <div class="page-header">
-                    <h1 class="page-title">Schedule Management</h1>
+                    <h1 class="page-title">Schedule Management<br><span style="font-size: 16px; font-weight: 500; color: #666;"><?= ucfirst($userRole) ?></span></h1>
                 </div>
                 <div class="header-right">
                     <?php include '../includes/user-dropdown.php'; ?>
