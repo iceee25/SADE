@@ -19,18 +19,25 @@ $display_role = ucfirst($current_user_role);
         </div>
         <hr style="margin: 0; border: none; border-top: 1px solid #e5e7eb;">
         
-        <!-- Add logout button so users can sign in as a different role -->
+        <!-- Show role switch options -->
         <?php if ($current_user_role === 'technician'): ?>
             <a href="switch-role.php?role=faculty" class="dropdown-item">
                 <i class="fas fa-exchange-alt"></i>
                 Switch to Faculty
             </a>
+        <?php elseif ($current_user_role === 'faculty'): ?>
+            <a href="switch-role.php?role=technician" class="dropdown-item">
+                <i class="fas fa-user-shield"></i>
+                Switch to Technician
+            </a>
         <?php endif; ?>
         
+        <?php if ($current_user_role === 'technician'): ?>
         <a href="logout.php" class="dropdown-item">
             <i class="fas fa-sign-out-alt"></i>
-            Technician
+            Logout
         </a>
+        <?php endif; ?>
     </div>
 </div>
 

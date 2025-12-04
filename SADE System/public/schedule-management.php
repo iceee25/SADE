@@ -2,11 +2,13 @@
 session_start();
 require_once '../includes/db_connect.php';
 
-$userRole = $_SESSION['user_role'] ?? 'faculty';
-if ($userRole !== 'technician' && $userRole !== 'faculty') {
-    header('Location: ../public/signin.php');
-    exit;
+// Set default role to faculty if no session exists
+if (!isset($_SESSION['user_role'])) {
+    $_SESSION['user_role'] = 'faculty';
+    $_SESSION['user_name'] = 'Faculty User';
 }
+
+$userRole = $_SESSION['user_role'] ?? 'faculty';
 
 // Get selected room
 $selected_room = $_GET['room'] ?? '1811';
