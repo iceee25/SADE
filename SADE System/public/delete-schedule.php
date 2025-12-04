@@ -5,8 +5,8 @@ require_once 'archive-log-helper.php';
 
 $userRole = $_SESSION['user_role'] ?? 'teacher';
 
-// Only technicians can delete schedules
-if ($userRole !== 'technician') {
+// Both technicians and faculty can delete schedules
+if ($userRole !== 'technician' && $userRole !== 'faculty') {
     $_SESSION['error'] = 'Unauthorized access.';
     header('Location: schedule-management.php');
     exit();

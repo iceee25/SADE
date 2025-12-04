@@ -4,8 +4,8 @@ require_once '../includes/db_connect.php';
 
 $userRole = $_SESSION['user_role'] ?? 'teacher';
 
-// Only technicians can edit schedules
-if ($userRole !== 'technician') {
+// Both technicians and faculty can edit schedules
+if ($userRole !== 'technician' && $userRole !== 'faculty') {
     header('Location: dashboard.php');
     exit();
 }

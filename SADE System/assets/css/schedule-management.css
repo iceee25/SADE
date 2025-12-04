@@ -32,8 +32,8 @@
     display: grid;
     grid-template-columns: 80px repeat(6, 1fr);
     gap: 0;
-    height: 900px;
-    overflow-y: auto;
+    height: auto;
+    overflow-y: visible;
     border: 1px solid #e0e0e0;
 }
 
@@ -47,13 +47,16 @@
 }
 
 .time-slot {
-    height: 50px;
+    height: 60px;
     padding: 8px 4px;
     font-size: 11px;
     color: #666;
     border-bottom: 1px solid #e0e0e0;
     text-align: center;
     line-height: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .day-column {
@@ -248,3 +251,98 @@
 .switch-role-btn:hover {
     background: #a00;
 }
+
+.room-dropdown {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #333;
+    background: white;
+    border: 2px solid #d4a5a5;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.room-dropdown:hover {
+    border-color: #c00;
+    background: #fff5f5;
+}
+
+.room-dropdown:focus {
+    border-color: #c00;
+    box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.1);
+}
+
+/* Notification Styles */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    min-width: 300px;
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-success {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.notification-error {
+    background: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.notification-info {
+    background: #d1ecf1;
+    border-left: 4px solid #0c5460;
+    color: #0c5460;
+}
+
+.notification i {
+    font-size: 20px;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+

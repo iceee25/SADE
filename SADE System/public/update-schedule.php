@@ -4,8 +4,8 @@ require_once '../includes/db_connect.php';
 
 $userRole = $_SESSION['user_role'] ?? 'teacher';
 
-// Only technicians can update schedules
-if ($userRole !== 'technician') {
+// Both technicians and faculty can update schedules
+if ($userRole !== 'technician' && $userRole !== 'faculty') {
     $_SESSION['error'] = 'Unauthorized access.';
     header('Location: schedule-management.php');
     exit();

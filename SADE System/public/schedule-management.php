@@ -41,23 +41,26 @@ $labs_result = $conn->query($labs_query);
 $labs = $labs_result->fetch_all(MYSQLI_ASSOC);
 
 $timeSlots = array(
-    '07:00' => 0, '07:30' => 0.5, '08:00' => 1, '08:30' => 1.5,
-    '09:00' => 2, '09:30' => 2.5, '10:00' => 3, '10:30' => 3.5, '11:00' => 4, '11:30' => 4.5,
-    '12:00' => 5, '12:30' => 5.5, '13:00' => 6, '13:30' => 6.5, '14:00' => 7, '14:30' => 7.5,
-    '15:00' => 8, '15:30' => 8.5, '16:00' => 9, '16:30' => 9.5, '17:00' => 10, '17:30' => 10.5,
-    '18:00' => 11, '18:30' => 11.5, '19:00' => 12, '19:30' => 12.5, '20:00' => 13
+    '07:00' => 0, '08:00' => 1, '09:00' => 2, '10:00' => 3, '11:00' => 4,
+    '12:00' => 5, '13:00' => 6, '14:00' => 7, '15:00' => 8, '16:00' => 9,
+    '17:00' => 10, '18:00' => 11, '19:00' => 12, '20:00' => 13, '21:00' => 14
 );
 
 $colors = array('schedule-blue', 'schedule-orange', 'schedule-red', 'schedule-purple', 'schedule-green');
 
 function getSchedulePosition($startTime, $endTime, $timeSlots) {
-    $startKey = date('H:i', strtotime($startTime));
-    $endKey = date('H:i', strtotime($endTime));
+    $startHour = (int)date('H', strtotime($startTime));
+    $startMinute = (int)date('i', strtotime($startTime));
+    $endHour = (int)date('H', strtotime($endTime));
+    $endMinute = (int)date('i', strtotime($endTime));
     
-    $startPos = isset($timeSlots[$startKey]) ? $timeSlots[$startKey] : 0;
-    $endPos = isset($timeSlots[$endKey]) ? $timeSlots[$endKey] : 1;
-    $height = max(($endPos - $startPos) * 50, 50);
-    $top = $startPos * 50;
+    // Calculate position in hours from 7:00 AM
+    $startPos = ($startHour - 7) + ($startMinute / 60);
+    $endPos = ($endHour - 7) + ($endMinute / 60);
+    
+    // Each hour = 60px
+    $height = max(($endPos - $startPos) * 60, 60);
+    $top = $startPos * 60;
     
     return array('top' => $top, 'height' => $height);
 }
@@ -103,20 +106,21 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
 
             <div class="page-header">
                 <div class="header-title">
-                    <h1>Lab <?= htmlspecialchars($selected_room) ?> Schedule</h1>
+                    <select id="roomSelector" class="room-dropdown" onchange="changeRoom(this.value)">
+                        <option value="1811" <?= $selected_room === '1811' ? 'selected' : '' ?>>Lab 1811 Schedule</option>
+                        <option value="1812" <?= $selected_room === '1812' ? 'selected' : '' ?>>Lab 1812 Schedule</option>
+                    </select>
                 </div>
                 <!-- Show add schedule button for both technician and faculty -->
-                <button class="btn btn-primary" onclick="openAddScheduleModal()" style="margin-right: 8px;">
-                    <i class="fas fa-plus"></i> Add Schedule
-                </button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-primary" onclick="openAddScheduleModal()">
+                        <i class="fas fa-plus"></i> Add Schedule
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmClearSchedules()">
+                        <i class="fas fa-trash-alt"></i> Clear Schedule
+                    </button>
+                </div>
             </div>
-
-            <?php if (isset($_SESSION['success'])): ?>
-                <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
-            <?php endif; ?>
-            <?php if (isset($_SESSION['error'])): ?>
-                <div class="alert alert-error"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
-            <?php endif; ?>
 
             <div class="schedule-container">
                 <div class="schedule-header">
@@ -140,12 +144,9 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
                     <div class="calendar-body">
                         <!-- Time Column -->
                         <div class="time-column">
-                            <?php for ($h = 7; $h <= 20; $h++): ?>
+                            <?php for ($h = 7; $h <= 21; $h++): ?>
                                 <?php $time_12 = date('g:i A', strtotime("$h:00")); ?>
                                 <div class="time-slot"><?= $time_12 ?></div>
-                                <div class="time-slot">
-                                    <?= date('g:i A', strtotime("$h:30")) ?>
-                                </div>
                             <?php endfor; ?>
                         </div>
 
@@ -198,13 +199,19 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
         <span>System Status: Online</span>
     </div>
 
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
     <!-- Add Schedule Modal -->
     <div id="addScheduleModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content add-schedule-modal">
             <div class="modal-header">
                 <h3 class="modal-title">Add New Schedule</h3>
                 <p class="modal-subtitle">Create a new class schedule for the selected laboratory</p>
             </div>
+
+            <!-- Modal notification area -->
+            <div id="modalNotification" class="modal-notification" style="display: none;"></div>
 
             <form id="addScheduleForm" method="POST" action="add-schedule.php">
                 <div class="form-group">
@@ -222,37 +229,48 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
                     <input type="text" class="form-input" name="instructor" placeholder="e.g., Prof. Smith" required>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Day</label>
-                        <select class="form-input" name="dayOfWeek" required>
-                            <option value="">Select Day</option>
-                            <option value="monday">Monday</option>
-                            <option value="tuesday">Tuesday</option>
-                            <option value="wednesday">Wednesday</option>
-                            <option value="thursday">Thursday</option>
-                            <option value="friday">Friday</option>
-                            <option value="saturday">Saturday</option>
-                        </select>
-                    </div>
+                <div id="scheduleSlotsContainer">
+                    <div class="schedule-slot" data-slot="0">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Day</label>
+                                <select class="form-input" name="dayOfWeek[]" required>
+                                    <option value="">Select Day</option>
+                                    <option value="monday">Monday</option>
+                                    <option value="tuesday">Tuesday</option>
+                                    <option value="wednesday">Wednesday</option>
+                                    <option value="thursday">Thursday</option>
+                                    <option value="friday">Friday</option>
+                                    <option value="saturday">Saturday</option>
+                                </select>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Room</label>
-                        <input type="text" class="form-input" name="room" value="<?= htmlspecialchars($selected_room) ?>" placeholder="e.g., 1811" readonly>
+                            <div class="form-group">
+                                <label class="form-label">Room</label>
+                                <select class="form-input" name="room[]" required>
+                                    <option value="1811" <?= $selected_room === '1811' ? 'selected' : '' ?>>1811</option>
+                                    <option value="1812" <?= $selected_room === '1812' ? 'selected' : '' ?>>1812</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Start Time</label>
+                                <input type="time" class="form-input" name="startTime[]" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">End Time</label>
+                                <input type="time" class="form-input" name="endTime[]" required>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Start Time</label>
-                        <input type="time" class="form-input" name="startTime" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">End Time</label>
-                        <input type="time" class="form-input" name="endTime" required>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-add-slot" onclick="addScheduleSlot()">
+                    <i class="fas fa-plus"></i> Add another day, room, start & end time
+                </button>
 
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeAddScheduleModal()">Cancel</button>
@@ -333,11 +351,9 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
 
             <div class="modal-footer">
                 <button onclick="closeScheduleDetails()"><i class="fas fa-check"></i> Done</button>
-                <!-- Show edit/delete buttons only for technicians -->
-                <?php if ($userRole === 'technician'): ?>
-                    <button onclick="editSchedule()"><i class="fas fa-edit"></i> Edit</button>
-                    <button onclick="deleteSchedule()"><i class="fas fa-trash"></i> Archive</button>
-                <?php endif; ?>
+                <!-- Edit/delete buttons available for both faculty and technicians -->
+                <button onclick="editSchedule()"><i class="fas fa-edit"></i> Edit</button>
+                <button onclick="deleteSchedule()"><i class="fas fa-trash"></i> Delete</button>
                 <!-- Participants button always visible as it provides access to registrations -->
                 <button onclick="switchTab('participants')"><i class="fas fa-users"></i> Participants</button>
             </div>
@@ -346,6 +362,110 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
 
     <script>
         let currentScheduleId = null;
+        let slotCounter = 1;
+
+        // Show notification function
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            // Remove after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Check for session messages on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_SESSION['success'])): ?>
+                showNotification('<?= addslashes($_SESSION['success']) ?>', 'success');
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['error'])): ?>
+                showNotification('<?= addslashes($_SESSION['error']) ?>', 'error');
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        });
+
+        // ESC key handler for closing modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAddScheduleModal();
+                closeScheduleDetails();
+            }
+        });
+
+        function confirmClearSchedules() {
+            const room = new URLSearchParams(window.location.search).get('room') || '1811';
+            if (confirm(`Are you sure you want to clear ALL schedules for Lab ${room}? This action cannot be undone.`)) {
+                window.location.href = `clear-schedules.php?room=${room}`;
+            }
+        }
+
+        function addScheduleSlot() {
+            const container = document.getElementById('scheduleSlotsContainer');
+            const newSlot = document.createElement('div');
+            newSlot.className = 'schedule-slot';
+            newSlot.setAttribute('data-slot', slotCounter);
+            newSlot.innerHTML = `
+                <div class="slot-header">
+                    <span>Schedule Slot ${slotCounter + 1}</span>
+                    <button type="button" class="btn-remove-slot" onclick="removeScheduleSlot(${slotCounter})">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Day</label>
+                        <select class="form-input" name="dayOfWeek[]" required>
+                            <option value="">Select Day</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Room</label>
+                        <select class="form-input" name="room[]" required>
+                            <option value="1811">1811</option>
+                            <option value="1812">1812</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Start Time</label>
+                        <input type="time" class="form-input" name="startTime[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Time</label>
+                        <input type="time" class="form-input" name="endTime[]" required>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newSlot);
+            slotCounter++;
+        }
+
+        function removeScheduleSlot(slotId) {
+            const slot = document.querySelector(`[data-slot="${slotId}"]`);
+            if (slot) {
+                slot.remove();
+            }
+        }
 
         function changeRoom() {
             const roomSelect = document.getElementById('roomSelect');
@@ -353,15 +473,69 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
             window.location.href = '?room=' + selectedRoom;
         }
 
+        function changeRoom(room) {
+            window.location.href = '?room=' + room;
+        }
+
         function openAddScheduleModal() {
             const modal = document.getElementById('addScheduleModal');
             modal.classList.add('active');
+            // Clear previous notifications
+            hideModalNotification();
         }
 
         function closeAddScheduleModal() {
             const modal = document.getElementById('addScheduleModal');
             modal.classList.remove('active');
+            // Clear form and notifications
+            document.getElementById('addScheduleForm').reset();
+            hideModalNotification();
         }
+
+        function showModalNotification(message, type = 'error') {
+            const notification = document.getElementById('modalNotification');
+            notification.className = `modal-notification modal-notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            notification.style.display = 'block';
+        }
+
+        function hideModalNotification() {
+            const notification = document.getElementById('modalNotification');
+            notification.style.display = 'none';
+        }
+
+        // Handle form submission with AJAX
+        document.getElementById('addScheduleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            hideModalNotification();
+
+            const formData = new FormData(this);
+
+            fetch('add-schedule.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeAddScheduleModal();
+                    showNotification(data.message, 'success');
+                    // Reload page to show new schedules
+                    setTimeout(() => {
+                        window.location.href = '?room=' + (data.room || '1811');
+                    }, 1000);
+                } else {
+                    // Show error in modal
+                    showModalNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showModalNotification('An error occurred. Please try again.', 'error');
+            });
+        });
 
         function viewScheduleDetails(scheduleId) {
             currentScheduleId = scheduleId;
