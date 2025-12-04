@@ -11,37 +11,7 @@ session_start();
     <title>SADE</title>
     <link rel="icon" type="image/png" href="../assets/images/sade-logo.png">
     <link href="../assets/css/main-style.css" rel="stylesheet">
-    <style>
-        .role-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        .role-tab {
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: #999;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-        .role-tab.active {
-            color: #b30000;
-            border-bottom-color: #b30000;
-        }
-        .role-tab:hover {
-            color: #b30000;
-        }
-        .role-content {
-            display: none;
-        }
-        .role-content.active {
-            display: block;
-        }
-    </style>
+    <link href="../assets/css/signin.css" rel="stylesheet">
 </head>
 <body>
     <div class="login-container">

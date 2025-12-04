@@ -1,0 +1,207 @@
+.calendar-wrapper {
+    border: 2px solid #d4a5a5;
+    border-radius: 8px;
+    background: white;
+    overflow: hidden;
+}
+
+.calendar-header-row {
+    display: grid;
+    grid-template-columns: 80px repeat(6, 1fr);
+    background: #f9f9f9;
+    border-bottom: 2px solid #d4a5a5;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.calendar-header-cell {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.calendar-header-cell:last-child {
+    border-right: none;
+}
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: 80px repeat(6, 1fr);
+    gap: 0;
+    height: 900px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+}
+
+.time-column {
+    background: #f9f9f9;
+    border-right: 2px solid #d4a5a5;
+    overflow: hidden;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+}
+
+.time-slot {
+    height: 50px;
+    padding: 8px 4px;
+    font-size: 11px;
+    color: #666;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.day-column {
+    position: relative;
+    border-right: 1px solid #e0e0e0;
+    background: white;
+}
+
+.day-column:last-child {
+    border-right: none;
+}
+
+.schedule-block {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    border-radius: 6px;
+    padding: 8px;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: visible;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.schedule-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.schedule-blue { background-color: #3498db; }
+.schedule-orange { background-color: #ff9800; }
+.schedule-red { background-color: #e74c3c; }
+.schedule-purple { background-color: #e91e63; }
+.schedule-green { background-color: #2ecc71; }
+
+.schedule-time {
+    font-weight: 700;
+    margin-bottom: 3px;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: normal;
+}
+
+.schedule-code {
+    font-size: 9px;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.schedule-instructor {
+    font-size: 9px;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.schedule-students {
+    font-size: 9px;
+    font-weight: 500;
+}
+
+#scheduleDetailsModal .modal-content {
+    max-width: 900px;
+    max-height: 85vh;
+    width: 90%;
+}
+
+.participants-body {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+#participantsTableContainer {
+    width: 100%;
+}
+
+.participants-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.participants-table thead {
+    background: #f9f9f9;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.participants-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #d4a5a5;
+    color: #333;
+}
+
+.participants-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.participants-table tr:hover {
+    background: #f5f5f5;
+}
+
+.no-participants {
+    text-align: center;
+    color: #666;
+    padding: 20px !important;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-edit {
+    background: #3498db;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #2980b9;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+}
