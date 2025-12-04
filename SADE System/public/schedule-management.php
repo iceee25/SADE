@@ -125,7 +125,7 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
             border-right: none;
         }
 
-        .schedule-block {
+.schedule-block {
             position: absolute;
             left: 4px;
             right: 4px;
@@ -136,8 +136,13 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            word-wrap: break-word;
+            white-space: normal;
         }
         
         .schedule-block:hover {
@@ -155,22 +160,25 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
             font-weight: 700;
             margin-bottom: 3px;
             font-size: 10px;
+            line-height: 1.2;
+            white-space: normal;
         }
         
         .schedule-code {
+            font-size: 9px;
             margin-bottom: 2px;
-            font-size: 10px;
+            font-weight: 500;
         }
         
         .schedule-instructor {
             font-size: 9px;
-            opacity: 0.95;
             margin-bottom: 2px;
+            font-weight: 500;
         }
         
         .schedule-students {
             font-size: 9px;
-            opacity: 0.95;
+            font-weight: 500;
         }
 
         #scheduleDetailsModal .modal-content {
@@ -278,34 +286,14 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
                 </div>
             </div>
 
-            <div class="tabs-section">
-                <div class="tabs-header">
-                    <!-- Hide non-schedule tabs for faculty users -->
-                    <?php if ($userRole === 'technician'): ?>
-                        <button class="tab-button active" onclick="switchTab('schedules')" id="schedulesTab">Schedules</button>
-                        <button class="tab-button" onclick="switchTab('reports')" id="reportsTab">Reports</button>
-                        <button class="tab-button" onclick="switchTab('devices')" id="devicesTab">Devices</button>
-                    <?php else: ?>
-                        <!-- Faculty users only see schedules tab -->
-                        <button class="tab-button active" onclick="switchTab('schedules')" id="schedulesTab">Schedules</button>
-                    <?php endif; ?>
-                </div>
-            </div>
-
             <div class="page-header">
-                <div class="user-profile">
-                    <select id="roomSelect" class="add-btn room-select" onchange="changeRoom()">
-                        <?php foreach ($labs as $lab): ?>
-                            <option value="<?= $lab['room'] ?>" <?= $lab['room'] == $selected_room ? 'selected' : '' ?>>
-                                Lab <?= $lab['room'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <!-- Show Add Schedule button only for technicians -->
-                    <?php if ($userRole === 'technician'): ?>
-                        <button class="add-btn" onclick="openAddScheduleModal()">+ Add Schedule</button>
-                    <?php endif; ?>
+                <div class="header-title">
+                    <h1>Lab <?= htmlspecialchars($selected_room) ?> Schedule</h1>
                 </div>
+                <!-- Show add schedule button for both technician and faculty -->
+                <button class="btn btn-primary" onclick="openAddScheduleModal()" style="margin-right: 8px;">
+                    <i class="fas fa-plus"></i> Add Schedule
+                </button>
             </div>
 
             <?php if (isset($_SESSION['success'])): ?>

@@ -35,8 +35,8 @@ $result = $conn->query("
         id,
         lab_id as laboratory,
         action as entry_type,
-        DATE_FORMAT(timestamp, '%m-%d-%y') as date,
-        DATE_FORMAT(timestamp, '%h:%i %p') as time,
+        DATE_FORMAT(CONVERT_TZ(timestamp, '+00:00', '+08:00'), '%m-%d-%y') AS date,
+        DATE_FORMAT(CONVERT_TZ(timestamp, '+00:00', '+08:00'), '%h:%i %p') AS time,
         user_name,
         method
     FROM access_logs
@@ -44,6 +44,7 @@ $result = $conn->query("
     ORDER BY timestamp DESC
     LIMIT $limit OFFSET $offset
 ");
+
 
 $logs = $result->fetch_all(MYSQLI_ASSOC);
 

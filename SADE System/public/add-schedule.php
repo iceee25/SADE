@@ -7,6 +7,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+$userRole = $_SESSION['user_role'] ?? 'guest';
+if ($userRole !== 'technician' && $userRole !== 'faculty') {
+    $_SESSION['error'] = 'Unauthorized access.';
+    header('Location: schedule-management.php');
+    exit();
+}
+
 $courseCode = trim($_POST['courseCode'] ?? '');
 $courseName = trim($_POST['courseName'] ?? '');
 $instructor = trim($_POST['instructor'] ?? '');
