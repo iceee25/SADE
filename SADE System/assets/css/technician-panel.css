@@ -64,7 +64,7 @@ tr:hover {
 }
 
 .btn {
-    background: #c00;
+    background: #ff9800;
     border: none;
     color: white;
     padding: 6px 14px;
@@ -73,8 +73,16 @@ tr:hover {
     font-weight: 500;
 }
 
+.btn:hover {
+    background: #b0b0b0;
+}
+
 .btn-delete {
-    background: #900;
+    background: #c00;
+}
+
+.btn-delete:hover {
+    background: #a00;
 }
 
 .modal {
