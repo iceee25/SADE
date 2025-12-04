@@ -6,43 +6,31 @@ $current_user_name = $_SESSION['user_name'] ?? 'User';
 $display_role = ucfirst($current_user_role);
 ?>
 <div class="user-dropdown-wrapper">
-    <!-- Updated button to show current role or "Faculty" based on mode -->
+    <!-- Updated button to show current user instead of opposite role -->
     <button class="user-dropdown-btn" onclick="toggleUserDropdown()">
-        <span class="user-role-text">
-            <?php if ($current_user_role === 'technician'): ?>
-                <?= htmlspecialchars($current_user_name) ?>
-            <?php else: ?>
-                Faculty
-            <?php endif; ?>
-        </span>
+        <span class="user-role-text"><?= htmlspecialchars($current_user_name) ?> (<?= htmlspecialchars($display_role) ?>)</span>
         <i class="fas fa-chevron-down"></i>
     </button>
     <div id="userDropdownMenu" class="user-dropdown-menu">
         <!-- Show current logged in user info -->
         <div class="dropdown-user-info">
-            <strong>
-                <?php if ($current_user_role === 'technician'): ?>
-                    <?= htmlspecialchars($current_user_name) ?>
-                <?php else: ?>
-                    Faculty
-                <?php endif; ?>
-            </strong>
+            <strong><?= htmlspecialchars($current_user_name) ?></strong>
             <small><?= htmlspecialchars($display_role) ?></small>
         </div>
         <hr style="margin: 0; border: none; border-top: 1px solid #e5e7eb;">
         
-        <!-- Show only switch option - either to faculty or to technician, no logout -->
+        <!-- Add logout button so users can sign in as a different role -->
         <?php if ($current_user_role === 'technician'): ?>
             <a href="switch-role.php?role=faculty" class="dropdown-item">
                 <i class="fas fa-exchange-alt"></i>
                 Switch to Faculty
             </a>
-        <?php else: ?>
-            <a href="switch-role.php?role=technician" class="dropdown-item">
-                <i class="fas fa-exchange-alt"></i>
-                Switch to Technician
-            </a>
         <?php endif; ?>
+        
+        <a href="logout.php" class="dropdown-item">
+            <i class="fas fa-sign-out-alt"></i>
+            Technician
+        </a>
     </div>
 </div>
 
