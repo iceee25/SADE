@@ -81,6 +81,18 @@ $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
 
                     <div class="form-row">
                         <div class="form-group">
+                            <label>Allowed Absences</label>
+                            <input type="number" name="allowedAbsences" value="<?= htmlspecialchars($schedule['allowed_absences'] ?? 3) ?>" min="0" step="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Grace Period (minutes)</label>
+                            <input type="number" name="gracePeriod" value="<?= htmlspecialchars($schedule['grace_period'] ?? 15) ?>" min="0" step="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
                             <label>Day of Week</label>
                             <select name="dayOfWeek" required>
                                 <?php foreach ($days as $day): ?>

@@ -229,6 +229,18 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
                     <input type="text" class="form-input" name="instructor" placeholder="e.g., Prof. Smith" required>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Allowed Absences</label>
+                        <input type="number" class="form-input" name="allowedAbsences" placeholder="e.g., 3" min="0" step="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Grace Period (minutes)</label>
+                        <input type="number" class="form-input" name="gracePeriod" placeholder="e.g., 15" min="0" step="1" required>
+                    </div>
+                </div>
+
                 <div id="scheduleSlotsContainer">
                     <div class="schedule-slot" data-slot="0">
                         <div class="form-row">
@@ -317,11 +329,11 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
                 </div>
                 <div class="details-row">
                     <strong>Grace Period:</strong>
-                    <span id="detailGrace">15 minutes</span>
+                    <span id="detailGrace">-</span>
                 </div>
                 <div class="details-row">
                     <strong>Absences Allowed:</strong>
-                    <span id="detailAbsences">6 hours</span>
+                    <span id="detailAbsences">-</span>
                 </div>
             </div>
 
@@ -557,6 +569,8 @@ function getSchedulePosition($startTime, $endTime, $timeSlots) {
                         document.getElementById('detailDay').textContent = schedule.day;
                         document.getElementById('detailTime').textContent = `${schedule.start_time} to ${schedule.end_time}`;
                         document.getElementById('detailDuration').textContent = `${durationHours} hour${durationHours !== 1 ? 's' : ''} ${durationMins > 0 ? durationMins + ' minutes' : ''}`;
+                        document.getElementById('detailGrace').textContent = `${schedule.grace_period || 0} minutes`;
+                        document.getElementById('detailAbsences').textContent = `${schedule.allowed_absences || 0}`;
 
                         const modal = document.getElementById('scheduleDetailsModal');
                         modal.classList.add('active');

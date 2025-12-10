@@ -10,7 +10,7 @@ if (!isset($_GET['id'])) {
 }
 
 $scheduleId = $_GET['id'];
-$query = "SELECT id, course_code, course_name, instructor, day, room, start_time, end_time FROM schedules WHERE id = ?";
+$query = "SELECT id, course_code, course_name, instructor, day, room, start_time, end_time, allowed_absences, grace_period FROM schedules WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $scheduleId);
 $stmt->execute();

@@ -17,12 +17,14 @@ if ($userRole !== 'technician' && $userRole !== 'faculty') {
 $courseCode = trim($_POST['courseCode'] ?? '');
 $courseName = trim($_POST['courseName'] ?? '');
 $instructor = trim($_POST['instructor'] ?? '');
+$allowedAbsences = intval($_POST['allowedAbsences'] ?? 0);
+$gracePeriod = intval($_POST['gracePeriod'] ?? 0);
 $daysOfWeek = $_POST['dayOfWeek'] ?? [];
 $rooms = $_POST['room'] ?? [];
 $startTimes = $_POST['startTime'] ?? [];
 $endTimes = $_POST['endTime'] ?? [];
 
-if (empty($courseCode) || empty($courseName) || empty($instructor) || empty($daysOfWeek) || empty($rooms) || empty($startTimes) || empty($endTimes)) {
+if (empty($courseCode) || empty($courseName) || empty($instructor) || $allowedAbsences < 0 || $gracePeriod < 0 || empty($daysOfWeek) || empty($rooms) || empty($startTimes) || empty($endTimes)) {
     $_SESSION['error'] = 'All fields are required';
     header('Location: schedule-management.php');
     exit();
@@ -69,7 +71,7 @@ for ($i = 0; $i < $slotCount; $i++) {
 
     // Insert the schedule
     $scheduleId = 'SCH-' . uniqid() . '-' . time();
-    $query = "INSERT INTO schedules (schedule_id, course_code, course_name, instructor, day, room, start_time, end_time, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO schedules (schedule_id, course_code, course_name, instructor, day, room, start_time, end_time, allowed_absences, grace_period, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
 
     if (!$stmt) {
@@ -77,7 +79,7 @@ for ($i = 0; $i < $slotCount; $i++) {
         continue;
     }
 
-    $stmt->bind_param("sssssssss", $scheduleId, $courseCode, $courseName, $instructor, $dayOfWeek, $room, $startTime, $endTime, $createdBy);
+    $stmt->bind_param("ssssssssiis", $scheduleId, $courseCode, $courseName, $instructor, $dayOfWeek, $room, $startTime, $endTime, $allowedAbsences, $gracePeriod, $createdBy);
 
     if ($stmt->execute()) {
         $successCount++;
