@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 27, 2025 at 02:46 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: 127.0.0.1:3306
+-- Generation Time: Dec 10, 2025 at 02:32 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,7 +45,8 @@ CREATE TABLE `access_logs` (
 
 INSERT INTO `access_logs` (`id`, `log_id`, `device_id`, `lab_id`, `user_id`, `user_name`, `action`, `method`, `timestamp`) VALUES
 (13, 'ARCHIVE-6925b81e3f728-1764079646', 'SYSTEM', '1811', '11', 'Co Leng', 'ARCHIVED_SCHEDULE', 'ARCHIVE', '2025-11-25 07:07:26'),
-(14, 'ARCHIVE-6925b8dd4d2f4-1764079837', 'SYSTEM', '1811', '11', 'Co Leng', 'ARCHIVED_SCHEDULE', 'ARCHIVE', '2025-11-25 07:10:37');
+(14, 'ARCHIVE-6925b8dd4d2f4-1764079837', 'SYSTEM', '1811', '11', 'Co Leng', 'ARCHIVED_SCHEDULE', 'ARCHIVE', '2025-11-25 07:10:37'),
+(15, 'ARCHIVE-6931bd23df99e-1764867363', 'SYSTEM', '1811', 'T1792', 'Marvin Gonzales', 'ARCHIVED_SCHEDULE', 'ARCHIVE', '2025-12-04 09:56:03');
 
 -- --------------------------------------------------------
 
@@ -167,11 +168,27 @@ CREATE TABLE `schedules` (
   `room` varchar(10) NOT NULL,
   `start_time` varchar(10) NOT NULL,
   `end_time` varchar(10) NOT NULL,
+  `allowed_absences` int(11) NOT NULL DEFAULT 3,
+  `grace_period` int(11) NOT NULL DEFAULT 15,
   `created_by` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_active` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`id`, `schedule_id`, `course_name`, `course_code`, `instructor`, `day`, `room`, `start_time`, `end_time`, `allowed_absences`, `grace_period`, `created_by`, `created_at`, `updated_at`, `is_active`) VALUES
+(27, 'SCH-6931bfc2d5c4e-1764868034', 'kalbo', 'IT26211', 'kalbo', 'monday', '1811', '07:00', '10:00', 3, 15, 'T1792', '2025-12-04 17:07:14', '2025-12-04 17:07:14', 1),
+(28, 'SCH-6931bfc2d63de-1764868034', 'kalbo', 'IT26211', 'kalbo', 'monday', '1811', '10:00', '13:00', 3, 15, 'T1792', '2025-12-04 17:07:14', '2025-12-04 17:07:14', 1),
+(29, 'SCH-6931bfc2d710c-1764868034', 'kalbo', 'IT26211', 'kalbo', 'tuesday', '1811', '07:00', '10:00', 3, 15, 'T1792', '2025-12-04 17:07:14', '2025-12-04 17:07:14', 1),
+(30, 'SCH-6931bfc2d775d-1764868034', 'kalbo', 'IT26211', 'kalbo', 'wednesday', '1811', '07:00', '10:00', 3, 15, 'T1792', '2025-12-04 17:07:14', '2025-12-04 17:07:14', 1),
+(35, 'SCH-6931c2667b7dd-1764868710', 'cpastone', 'CAPSTONE1', 'zhou', 'thursday', '1811', '10:00', '13:00', 3, 15, 'SYSTEM', '2025-12-04 17:18:30', '2025-12-04 17:18:30', 1),
+(36, 'SCH-6931c3002d0be-1764868864', 'kalbo', 'IT26211', 'kalbo', 'friday', '1812', '08:00', '11:00', 3, 15, 'SYSTEM', '2025-12-04 17:21:04', '2025-12-04 17:21:04', 1),
+(37, 'SCH-693975635a92c-1765373283', 'KALBO101', 'KLB101', 'KALBO', 'saturday', '1812', '10:00', '13:00', 2, 40, 'T1792', '2025-12-10 13:28:03', '2025-12-10 13:28:03', 1),
+(38, 'SCH-69397622d0a0a-1765373474', 'kalbo', 'klb101', 'kalbo', 'monday', '1812', '07:00', '10:00', 1, 20, 'T1792', '2025-12-10 13:31:14', '2025-12-10 13:31:14', 1);
 
 -- --------------------------------------------------------
 
@@ -260,7 +277,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id`, `user_type`, `first_name`, `last_name`, `email`, `pin`, `allowed_labs`, `access_level`, `is_active`, `created_at`) VALUES
-(11, 'T8363', 'TECHNICIAN', 'Co', 'Leng', NULL, '2222', NULL, 'TECHNICIAN', 1, '2025-11-11 06:04:32');
+(11, 'T8363', 'TECHNICIAN', 'Co', 'Leng', NULL, '$2y$10$odnckQ73Bj.qSz3eU7/TkeDh8qTuqe.khjNXmiHm2SSVmWkuX9fDq', NULL, 'TECHNICIAN', 1, '2025-11-11 06:04:32'),
+(12, 'T4764', 'TECHNICIAN', 'Test', 'Technician', NULL, '$2y$10$qQGxyhiduXDN6/RBf0jEW.3tpl2DuNqLmQoyCx5X1.TGCPuNOol7.', NULL, 'TECHNICIAN', 1, '2025-12-04 15:42:45'),
+(14, 'T6141', 'TECHNICIAN', 'Technician', '2 ', NULL, '$2y$10$vRUjfFzD53czw4yjSv5w/evbOkvR8hd7U/9Lf2tVfwYrFRlHcDqfu', NULL, 'TECHNICIAN', 1, '2025-12-04 15:55:22'),
+(16, 'T1792', 'TECHNICIAN', 'Marvin', 'Gonzales', 'rewind5655@gmail.com', '$2y$10$rRSYLiv0bJTb/ytpjlYTwOdXPezTxytQFAXMVtED6OOmx4MYvgzCC', NULL, 'TECHNICIAN', 1, '2025-12-04 16:05:05'),
+(17, 'T8695', 'TECHNICIAN', 'Troy', 'Salonga', 'marvintroy9252000@gmail.com', '$2y$10$Eo0.J83ruHdwzUzvVSrpKuKcvdn0VnDWE34xHF9HheBxyhLZltuoi', NULL, 'TECHNICIAN', 1, '2025-12-04 16:11:13'),
+(18, 'T3832', 'TECHNICIAN', 'Rewind', 'Troy', 'rewindtroy@gmail.com', '$2y$10$ANOD6hAI2lTQ6Lxx8bN9x.2pPTvkLoic7USXyLuPcRBZ/EAoHDMj2', NULL, 'TECHNICIAN', 1, '2025-12-04 16:13:17');
 
 --
 -- Indexes for dumped tables
@@ -355,13 +377,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `access_logs`
 --
 ALTER TABLE `access_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `devices`
@@ -379,7 +401,7 @@ ALTER TABLE `participants`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `security_alerts`
@@ -403,7 +425,7 @@ ALTER TABLE `system_logs`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
