@@ -89,6 +89,19 @@ $count_row = $count_result->fetch_assoc();
 $total_participants = $count_row['total'];
 $total_pages = ceil($total_participants / $limit);
 
+// Handle delete from GET parameter (for navigation from schedule page)
+if (isset($_GET['delete'])) {
+    $student_id = (int)$_GET['delete'];
+    $stmt = $conn->prepare("DELETE FROM participants WHERE id = ?");
+    $stmt->bind_param('i', $student_id);
+    if ($stmt->execute()) {
+        $_SESSION['success_message'] = 'Participant deleted successfully';
+    }
+    $stmt->close();
+    header('Location: participant-registration.php');
+    exit;
+}
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
@@ -103,6 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $conn->prepare("INSERT INTO participants (id_number, full_name, user_type, email, status) VALUES (?, ?, ?, ?, ?)");
                 $stmt->bind_param('sssss', $id_number, $full_name, $user_type, $email, $status);
                 if ($stmt->execute()) {
+                    $_SESSION['success_message'] = 'Participant added successfully';
                     header('Location: participant-registration.php');
                     exit;
                 }
@@ -111,7 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $student_id = (int)$_POST['student_id'];
             $stmt = $conn->prepare("DELETE FROM participants WHERE id = ?");
             $stmt->bind_param('i', $student_id);
-            $stmt->execute();
+            if ($stmt->execute()) {
+                $_SESSION['success_message'] = 'Participant deleted successfully';
+            }
+            $stmt->close();
             header('Location: participant-registration.php');
             exit;
         }
@@ -126,297 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>SADE</title>
     <link rel="icon" type="image/png" href="/assets/images/sade-logo.png">
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/participant-registration.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .registration-container {
-            background: white;
-            border-radius: 16px;
-            border: 2px solid #b30000;
-            padding: 40px;
-            margin: 20px;
-        }
-
-        .registration-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .registration-title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .registration-logo {
-            width: 40px;
-            height: 40px;
-            background: #b30000;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .role-selector {
-            background: #b30000;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .registration-section {
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .collective-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .btn-csv-download {
-            background: #b30000;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.3s;
-        }
-
-        .btn-csv-download:hover {
-            background: #a10000;
-        }
-
-        .btn-upload {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.3s;
-        }
-
-        .btn-upload:hover {
-            background: #059669;
-        }
-
-        .registration-form {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #666;
-            margin-bottom: 6px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #b30000;
-            background: white;
-        }
-
-        .form-input::placeholder {
-            color: #ccc;
-        }
-
-        .btn-add-student {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.3s;
-        }
-
-        .btn-add-student:hover {
-            background: #059669;
-        }
-
-        .participants-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .participants-table thead {
-            background: #f5f5f5;
-        }
-
-        .participants-table th {
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #e5e7eb;
-            font-size: 13px;
-        }
-
-        .participants-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-
-        .status-present {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-absent {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-edit, .btn-delete {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 12px;
-            transition: background 0.3s;
-        }
-
-        .btn-edit {
-            background: #e5e7eb;
-            color: #666;
-        }
-
-        .btn-edit:hover {
-            background: #d1d5db;
-        }
-
-        .btn-delete {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .pagination-info {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .pagination-btn {
-            background: white;
-            border: 1px solid #e5e7eb;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .pagination-btn:hover:not(:disabled) {
-            border-color: #b30000;
-            color: #b30000;
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Add styles for CSV upload modal and success message */
-        .success-message {
-            background: #dcfce7;
-            color: #166534;
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .success-message.hidden {
-            display: none;
-        }
-
-        #csv-file-input {
-            display: none;
-        }
-    </style>
 </head>
 <body>
     <div class="main-container">
@@ -441,6 +169,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button onclick="this.parentElement.classList.add('hidden')" style="background: none; border: none; cursor: pointer; font-weight: bold;">×</button>
                 </div>
                 <?php unset($_SESSION['csv_message']); ?>
+                <?php endif; ?>
+                
+                <?php if (isset($_SESSION['success_message'])): ?>
+                <div class="success-message" style="background: #d4edda; border-left: 4px solid #28a745; color: #155724; padding: 12px 16px; margin-bottom: 20px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                    <span><?php echo htmlspecialchars($_SESSION['success_message']); ?></span>
+                    <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; cursor: pointer; font-weight: bold; color: #155724; font-size: 18px;">×</button>
+                </div>
+                <?php unset($_SESSION['success_message']); ?>
                 <?php endif; ?>
 
                 <div class="registration-header">

@@ -1,0 +1,532 @@
+.calendar-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+}
+
+.calendar-header-row {
+    display: grid;
+    grid-template-columns: 80px repeat(6, 1fr);
+    background: linear-gradient(135deg, #b30000 0%, #d32f2f 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header-cell {
+    padding: 14px 12px;
+    text-align: center;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.calendar-header-cell:last-child {
+    border-right: none;
+}
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: 80px repeat(6, 1fr);
+    gap: 0;
+    height: auto;
+    overflow-y: visible;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    align-items: start;
+    background: #ffffff;
+    /* Ensure perfect vertical alignment between time column and day columns */
+    align-content: start;
+}
+
+.time-column {
+    width: 80px;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+    border-right: 2px solid #d4a5a5;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+    /* Ensure time column starts at top with no offset */
+    margin: 0;
+    padding: 0;
+}
+
+.time-slot {
+    box-sizing: border-box;
+    height: 46.5px; /* Exactly 46.5px per 30-minute slot - must match calculation */
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+    border-bottom: 1px solid #e8e8e8;
+    border-top: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #fafafa;
+    position: relative;
+    line-height: 46.5px;
+}
+
+.time-slot:last-child {
+    border-bottom: none;
+}
+
+.day-column {
+    position: relative;
+    border-right: 1px solid #e0e0e0;
+    background: white;
+    /* 28 half-hour slots from 7:00 AM to 9:00 PM (14 hours * 2) = 28 slots */
+    /* Each slot is exactly 46.5px */
+    min-height: calc(28 * 46.5px);
+    height: calc(28 * 46.5px);
+    /* Ensure day column starts at top with no offset - must match time column */
+    margin: 0;
+    padding: 0;
+    top: 0;
+    background-image: 
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 45.5px,
+            rgba(248, 248, 248, 0.3) 45.5px,
+            rgba(248, 248, 248, 0.3) 46.5px
+        );
+}
+
+.day-column:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Ensure time slots align perfectly with day column grid */
+.time-column .time-slot:first-child {
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Ensure first time slot and first schedule position are perfectly aligned */
+.day-column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-top: 1px solid transparent;
+    pointer-events: none;
+}
+
+.day-column:last-child {
+    border-right: none;
+}
+
+.schedule-block {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    border-radius: 8px;
+    padding: 10px 8px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    word-wrap: break-word;
+    white-space: normal;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: 2;
+}
+
+.schedule-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 8px 8px 0 0;
+}
+
+.schedule-block:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.schedule-blue { 
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.schedule-orange { 
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.schedule-red { 
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.schedule-purple { 
+    background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+}
+
+.schedule-green { 
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.schedule-time {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: normal;
+    letter-spacing: 0.3px;
+    opacity: 0.95;
+}
+
+.schedule-code {
+    font-size: 10px;
+    margin-bottom: 3px;
+    font-weight: 600;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
+.schedule-instructor {
+    font-size: 10px;
+    margin-bottom: 3px;
+    font-weight: 500;
+    opacity: 0.85;
+}
+
+.schedule-students {
+    font-size: 9px;
+    font-weight: 500;
+    opacity: 0.8;
+    margin-top: auto;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#scheduleDetailsModal .modal-content {
+    max-width: 900px;
+    max-height: 85vh;
+    width: 90%;
+}
+
+.participants-body {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+#participantsTableContainer {
+    width: 100%;
+}
+
+.participants-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.participants-table thead {
+    background: #f9f9f9;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.participants-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+}
+
+.participants-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.participants-table tr:hover {
+    background: #f5f5f5;
+}
+
+.no-participants {
+    text-align: center;
+    color: #666;
+    padding: 20px !important;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-edit {
+    background: #3498db;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #2980b9;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px; /* tightened spacing */
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* Make the role text bold on the right side of the header */
+.header-right .role-indicator {
+    font-weight: 700;
+}
+
+/* User widget: pill + subtext (top-right) */
+.user-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user-pill {
+    background: #c00;
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(204,0,0,0.12);
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.user-subtext {
+    color: #666;
+    font-size: 13px;
+}
+
+.header-left h1 {
+    color: #333;
+    margin: 0;
+    font-size: 2em;
+}
+
+.header-left .role-indicator {
+    /* Make current role less prominent and black */
+    color: #111;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.header-left .role-indicator .user-name {
+    color: #333;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.switch-role-btn {
+    background: #c00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.switch-role-btn:hover {
+    background: #a00;
+}
+
+.room-dropdown {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    background: white;
+    border: 2px solid #d4a5a5;
+    border-radius: 6px;
+    padding: 8px 6px 8px 12px; /* top right bottom left */
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.room-dropdown:hover {
+    border-color: #c00;
+    background: #fff5f5;
+}
+
+.room-dropdown:focus {
+    border-color: #c00;
+    box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.1);
+}
+
+/* Notification Styles */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    min-width: 300px;
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-success {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.notification-error {
+    background: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.notification-info {
+    background: #d1ecf1;
+    border-left: 4px solid #0c5460;
+    color: #0c5460;
+}
+
+.notification i {
+    font-size: 20px;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* Clear-schedule role-matched danger button */
+.btn-danger-role {
+    background: #c00; /* match user pill */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-danger-role:hover {
+    background: #a00;
+}
+
+h1.page-title {
+    color: #900;
+    margin-bottom: 8px; /* reduced */
+}
+
+/* Tighten spacing between header area and page content */
+.page-header {
+    margin-bottom: 0; /* tighten to bring viewing/title closer */
+}
+
+.schedule-header {
+    margin-top: 0; /* remove top gap */
+}
+
+/* reduce top margin for the main calendar container */
+.calendar-wrapper {
+    margin-top: 0px;
+}
+
+/* Make the viewing title a bit tighter */
+.schedule-title {
+    margin: 0;
+    font-size: 1.05em;
+}
+
+/* Reduce table paddings for denser layout */
+.participants-table th,
+.participants-table td {
+    padding: 8px 12px;
+}
+
+.btn-register-participants:hover {
+    background: #a00 !important;
+}
+

@@ -4,8 +4,8 @@ require_once '../includes/db_connect.php';
 
 $userRole = $_SESSION['user_role'] ?? 'teacher';
 
-// Only technicians can edit schedules
-if ($userRole !== 'technician') {
+// Both technicians and faculty can edit schedules
+if ($userRole !== 'technician' && $userRole !== 'faculty') {
     header('Location: dashboard.php');
     exit();
 }
@@ -43,117 +43,8 @@ $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SADE - Edit Schedule</title>
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/edit-schedule.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .edit-container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .edit-header {
-            margin-bottom: 30px;
-        }
-
-        .edit-header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #c62828;
-            box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-cancel {
-            background: #e0e0e0;
-            color: #333;
-        }
-
-        .btn-cancel:hover {
-            background: #d0d0d0;
-        }
-
-        .btn-publish {
-            background: #c62828;
-            color: white;
-        }
-
-        .btn-publish:hover {
-            background: #b71c1c;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
-        }
-
-        .alert {
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .alert.success {
-            background: #d4edda;
-            color: #155724;
-            display: block;
-        }
-
-        .alert.error {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-    </style>
 </head>
 <body>
     <div class="main-container">
@@ -186,6 +77,18 @@ $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
                     <div class="form-group">
                         <label>Instructor</label>
                         <input type="text" name="instructor" value="<?= htmlspecialchars($schedule['instructor']) ?>" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Allowed Absences</label>
+                            <input type="number" name="allowedAbsences" value="<?= htmlspecialchars($schedule['allowed_absences'] ?? 3) ?>" min="0" step="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Grace Period (minutes)</label>
+                            <input type="number" name="gracePeriod" value="<?= htmlspecialchars($schedule['grace_period'] ?? 15) ?>" min="0" step="1" required>
+                        </div>
                     </div>
 
                     <div class="form-row">

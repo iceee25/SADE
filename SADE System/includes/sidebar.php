@@ -14,17 +14,20 @@ $is_faculty = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'facul
 <div class="sidebar">
     <div class="sidebar-header">
         <h2>
-            <img src="../assets/images/sade-logo.png" alt="Logo" width="250" height="125">
+            <img src="../assets/images/sade-logo.png" alt="Logo" width="140" height="125">
         </h2>
     </div>
+    
 
     <div class="sidebar-menu">
         <!-- Schedule Management - accessible to both Faculty and Technician -->
         <a href="../public/schedule-management.php" 
            class="menu-item <?= ($current_page == 'schedule-management.php') ? 'active' : '' ?>">
             <i class="fas fa-clipboard-list"></i>
-            Schedules
+            Schedule Management
         </a>
+
+        <!-- Role switcher placeholder - moved to end of menu -->
 
         <!-- Technician-only menu items -->
         <?php if ($is_technician): ?>
@@ -58,6 +61,21 @@ $is_faculty = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'facul
                class="menu-item <?= ($current_page == 'technician-panel.php') ? 'active' : '' ?>">
                 <i class="fas fa-keyboard"></i>
                 Technician Panel
+            </a>
+        <?php endif; ?>
+
+        <!-- Role switcher - available to both Faculty and Technician (placed last in the menu) -->
+        <?php if ($is_technician): ?>
+            <a href="../public/switch-role.php?role=faculty" 
+               class="menu-item <?= ($current_page == 'switch-role.php') ? 'active' : '' ?>">
+                <i class="fas fa-exchange-alt"></i>
+                Switch to Faculty
+            </a>
+        <?php else: ?>
+            <a href="../public/switch-role.php?role=technician" 
+               class="menu-item <?= ($current_page == 'switch-role.php') ? 'active' : '' ?>">
+                <i class="fas fa-exchange-alt"></i>
+                Switch to Technician
             </a>
         <?php endif; ?>
     </div>

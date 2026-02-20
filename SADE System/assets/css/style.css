@@ -675,9 +675,10 @@ h2 {
 }
 
 .table-wrapper {
-  border: 2px solid #b30000;
-  border-radius: 16px;
-  padding-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;              /* remove extra spacing */
+  overflow-x: auto;        /* safety for small screens */
 }
 
 table {
@@ -826,29 +827,6 @@ th:last-child {
     font-size: 18px;
 }
 
-/* === LOGOUT SECTION === */
-.logout-section {
-    padding: 20px;
-    border-top: 1px solid #f3f4f6;
-}
-
-/* Logout button */
-.logout-btn {
-    width: 100%;
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 12px 0;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.logout-btn:hover {
-    background: #dc2626;
-}
-
 /* ===== Add Faculty Modal Styles ===== */
 
 .modal {
@@ -948,6 +926,7 @@ input:focus {
 .table-wrapper table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;     /* forces columns to stay inside */
 }
 
 .table-wrapper table th,
