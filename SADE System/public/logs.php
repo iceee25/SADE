@@ -45,7 +45,6 @@ $result = $conn->query("
     LIMIT $limit OFFSET $offset
 ");
 
-
 $logs = $result->fetch_all(MYSQLI_ASSOC);
 
 // Get total count for pagination with filters
@@ -70,6 +69,8 @@ $types = $types_result->fetch_all(MYSQLI_ASSOC);
     <title>SADE - Logs</title>
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/logs.css" rel="stylesheet">
+    <!-- Added Font Awesome for improved icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="main-container">
@@ -84,7 +85,9 @@ $types = $types_result->fetch_all(MYSQLI_ASSOC);
             <div class="header">
                 <h1 class="page-title">Logs</h1>
                 <div class="user-profile">
-                    <button class="add-btn" onclick="toggleFilterPanel()">🔍 Filter Logs</button>
+                    <button class="add-btn" onclick="toggleFilterPanel()">
+                        <i class="fas fa-filter"></i> Filter Logs
+                    </button>
                 </div>
             </div>
 
@@ -190,12 +193,24 @@ $types = $types_result->fetch_all(MYSQLI_ASSOC);
                 </table>
             </div>
 
+            <!-- Improved export buttons with better UI and format options -->
             <div class="logs-actions">
-                <button class="btn-export" onclick="exportLogsHistory()">
-                    <i class="fas fa-download"></i> Export Logs
-                </button>
+                <div class="export-dropdown">
+                    <button class="btn-export" onclick="toggleExportMenu()">
+                        <i class="fas fa-download"></i> Export Logs
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="export-menu" id="exportMenu" style="display: none;">
+                        <button class="export-option" onclick="exportLogs('pdf')">
+                            <i class="fas fa-file-pdf"></i> Export as PDF
+                        </button>
+                        <button class="export-option" onclick="exportLogs('excel')">
+                            <i class="fas fa-file-excel"></i> Export as Excel
+                        </button>
+                    </div>
+                </div>
                 <button class="btn-delete" onclick="deleteLogsHistory()">
-                    <i class="fas fa-trash"></i> Delete Logs
+                    <i class="fas fa-trash-alt"></i> Delete Logs
                 </button>
             </div>
         </div>
@@ -205,6 +220,20 @@ $types = $types_result->fetch_all(MYSQLI_ASSOC);
         function toggleFilterPanel() {
             const panel = document.getElementById('filterPanel');
             panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function exportLogs(format) {
+            const params = new URLSearchParams(window.location.search);
+            params.set('format', format);
+            const userName = '<?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?>';
+            params.set('user_name', userName);
+            const exportUrl = 'export-logs.php?' + params.toString();
+            window.location.href = exportUrl;
         }
 
         function previousPage() {
@@ -226,13 +255,6 @@ $types = $types_result->fetch_all(MYSQLI_ASSOC);
             }
         }
 
-        function exportLogsHistory() {
-            // Get current filter parameters
-            const params = new URLSearchParams(window.location.search);
-            const exportUrl = 'export-logs.php?' + params.toString();
-            window.location.href = exportUrl;
-        }
-
         function deleteLogsHistory() {
             if (confirm('Are you sure you want to delete these logs? This action cannot be undone.')) {
                 const params = new URLSearchParams(window.location.search);
@@ -240,6 +262,14 @@ $types = $types_result->fetch_all(MYSQLI_ASSOC);
                 window.location.href = deleteUrl;
             }
         }
+
+        document.addEventListener('click', function(event) {
+            const exportDropdown = document.querySelector('.export-dropdown');
+            const exportMenu = document.getElementById('exportMenu');
+            if (exportDropdown && !exportDropdown.contains(event.target)) {
+                exportMenu.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
